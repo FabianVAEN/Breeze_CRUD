@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -16,29 +17,42 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Obtener todos los usuarios y paginarlos (por ejemplo, 10 por página)
         $users = User::paginate(10);
 
-        // Retornar la vista de listado, pasando la variable $users
         return view('users.index', compact('users'));
     }
 
-    // ... (rest of the controller methods: create, store, show, edit, update, destroy)
-
-
     public function create()
     {
-        //
+        // Devolver la vista con el formulario de creación.
+        return view('users.create'); 
     }
-
-    /**
+/**
      * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
-    }
+        // 1. VALIDACIÓN
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users', // Asegura que el email sea único
+            'password' => 'required|string|min:8|confirmed', // 'confirmed' busca un campo llamado 'password_confirmation'
+        ]);
 
+        // 2. CREACIÓN DEL USUARIO
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // Usar Hash::make para encriptar la contraseña
+        ]);
+
+        // 3. REDIRECCIÓN Y MENSAJE DE ÉXITO
+        return redirect()->route('users.index')
+                         ->with('success', 'Usuario creado exitosamente.');
+    }
     /**
      * Display the specified resource.
      */
