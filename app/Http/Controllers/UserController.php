@@ -63,25 +63,69 @@ class UserController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        // Devolver la vista de edición, pasando la instancia del usuario.
+        return view('users.edit', compact('user')); 
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        // 1. VALIDACIÓN
+        $request->validate([
+            'name' => 'required|string|max:255',
+            
+            // Regla crucial: el email debe ser único, PERO IGNORANDO el email actual del usuario ($user->id)
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            
+            // La contraseña es opcional, pero si se envía, debe cumplir los requisitos y confirmarse.
+            'password' => 'nullable|string|min:8|confirmed', 
+        ]);
+
+        // 2. ACTUALIZACIÓN DE DATOS (EXCLUYENDO LA CONTRASEÑA)
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+        
+        // 3. ACTUALIZACIÓN CONDICIONAL DE CONTRASEÑA
+        if ($request->filled('password')) {
+            $user->update([
+                'password' => Hash::make($request->password),
+            ]);
+        }
+
+        // 4. REDIRECCIÓN Y MENSAJE DE ÉXITO
+        return redirect()->route('users.index')
+                         ->with('success', 'Usuario actualizado exitosamente.');
     }
 
-    /**
+/**
      * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        // 1. ELIMINAR EL USUARIO
+        // Laravel usa Route Model Binding, por lo que la variable $user
+        // ya es una instancia del modelo App\Models\User.
+        $user->delete();
+
+        // 2. REDIRECCIÓN Y MENSAJE DE ÉXITO
+        return redirect()->route('users.index')
+                         ->with('success', 'Usuario eliminado exitosamente.');
     }
 }
