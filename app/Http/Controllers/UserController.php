@@ -10,16 +10,38 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 
 {
+
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request // <-- ACEPTAMOS LA SOLICITUD
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
+        // Obtener el término de búsqueda de la URL (ej: /users?search=Fabian)
+        $search = $request->input('search');
 
-        return view('users.index', compact('users'));
+        // Inicializar la consulta al modelo User
+        $query = User::query();
+
+        // Aplicar el filtro SI se proporciona un término de búsqueda
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                // Filtrar por nombre O por email
+                $q->where('name', 'LIKE', '%' . $search . '%')
+                  ->orWhere('email', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        // Obtener los usuarios paginados basados en la consulta filtrada
+        $users = $query->paginate(10);
+        
+        // Mantener el término de búsqueda en los enlaces de paginación
+        $users->appends(['search' => $search]); 
+
+        // Retornar la vista, pasando los usuarios paginados
+        return view('users.index', compact('users', 'search'));
     }
 
     public function create()
