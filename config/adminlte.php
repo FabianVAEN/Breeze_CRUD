@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard', // Ruta al dashboard después de iniciar sesión
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -313,7 +313,7 @@ return [
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'Buscar',
         ],
         [
             'text' => 'blog',
@@ -327,14 +327,34 @@ return [
             'label' => 4,
             'label_color' => 'success',
         ],
-        ['header' => 'account_settings'],
+        // ----------------------------------------------------------------------
+        // -- 5. Bloque: GESTIÓN DE USUARIOS
+        // ----------------------------------------------------------------------
         [
-            'text' => 'profile',
+            'text' => 'Gestión de Usuarios',       // Título principal que aparecerá en el Sidebar
+            'icon' => 'fas fa-fw fa-users',         // Icono de usuarios (Font Awesome)
+            'submenu' => [                          // Abrir un submenú para organizar las acciones
+                [
+                    'text' => 'Lista y Búsqueda',
+                    'url'  => 'users',              // La URL de tu ruta users.index
+                    'icon' => 'fas fa-fw fa-list',
+                ],
+                [
+                    'text' => 'Crear Nuevo Usuario',
+                    'url'  => 'users/create',       // La URL de tu ruta users.create
+                    'icon' => 'fas fa-fw fa-plus',
+                ],
+            ],
+        ],
+        // Opciones de la cuenta y configuración
+        ['header' => 'Opciones de la cuenta'],
+        [
+            'text' => 'Perfil',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'change_password',
+            'text' => 'Cambiar Contraseña',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
         ],
@@ -392,25 +412,7 @@ return [
             'icon_color' => 'cyan',
             'url' => '#',
         ],
-    // ----------------------------------------------------------------------
-    // -- 5. Bloque: GESTIÓN DE USUARIOS
-    // ----------------------------------------------------------------------
-    [
-        'text' => 'Gestión de Usuarios',       // Título principal que aparecerá en el Sidebar
-        'icon' => 'fas fa-fw fa-users',         // Icono de usuarios (Font Awesome)
-        'submenu' => [                          // Abrir un submenú para organizar las acciones
-            [
-                'text' => 'Lista y Búsqueda',
-                'url'  => 'users',              // La URL de tu ruta users.index
-                'icon' => 'fas fa-fw fa-list',
-            ],
-            [
-                'text' => 'Crear Nuevo Usuario',
-                'url'  => 'users/create',       // La URL de tu ruta users.create
-                'icon' => 'fas fa-fw fa-plus',
-            ],
-        ],
-    ],
+
     ],
 
     /*
