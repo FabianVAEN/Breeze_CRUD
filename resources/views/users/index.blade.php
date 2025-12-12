@@ -1,17 +1,38 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Gestión de Usuarios') }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-gray-500 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    @include('users.partials.table', ['users' => $users])
-                </div>
-            </div>
+@section('title', 'Gestión de Usuarios')
+
+@section('content_header')
+    <h1>Gestión de Usuarios</h1>
+@stop
+
+@section('content')
+    {{-- Mostrar mensajes de éxito (si los hay) --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    
+    {{-- Usamos la clase 'card' de Bootstrap para contener el contenido --}}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Listado de Usuarios</h3>
+        </div>
+        <div class="card-body">
+            {{-- Incluimos la tabla y el formulario de búsqueda --}}
+            @include('users.partials.table')
+        </div>
+        
+        <div class="card-footer">
+             {{-- Mover la paginación aquí para que esté en el pie de la tarjeta --}}
+             @isset($users)
+                 {{ $users->links() }}
+             @endisset
         </div>
     </div>
-</x-app-layout>
+@stop
+{{-- La sección 'js' o 'css' se pueden dejar vacías por ahora --}}

@@ -1,66 +1,73 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Editar Usuario') }}: {{ $user->name }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    
-                    {{-- MENSAJES DE ERROR DE VALIDACIÓN (Si usas el mismo código del create.blade.php) --}}
-                    @if ($errors->any())
-                        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                            <ul class="list-disc list-inside">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+@section('title', 'Editar Usuario')
 
-                    {{-- 1. Formulario que apunta al método update y usa PATCH --}}
-                    <form method="POST" action="{{ route('users.update', $user) }}">
-                        @csrf 
-                        @method('PATCH') {{-- ¡NECESARIO! Simula el método PATCH --}}
+@section('content_header')
+    <h1>Editar Usuario: {{ $user->name }}</h1>
+@stop
 
-                        {{-- NOMBRE --}}
-                        <div class="mt-4">
-                            <label for="name" class="block font-medium text-sm text-gray-700">Nombre</label>
-                            {{-- 2. PRECÁRGA DE VALOR ACTUAL --}}
-                            <input id="name" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" type="text" name="name" value="{{ old('name', $user->name) }}" required autofocus />
-                        </div>
-
-                        {{-- EMAIL --}}
-                        <div class="mt-4">
-                            <label for="email" class="block font-medium text-sm text-gray-700">Email</label>
-                            <input id="email" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" type="email" name="email" value="{{ old('email', $user->email) }}" required />
-                        </div>
-
-                        {{-- CONTRASEÑA (Dejar vacío, solo para cambiar) --}}
-                        <div class="mt-4">
-                            <label for="password" class="block font-medium text-sm text-gray-700">Nueva Contraseña (Dejar vacío para no cambiar)</label>
-                            <input id="password" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" type="password" name="password" autocomplete="new-password" />
-                        </div>
-
-                        {{-- CONFIRMAR CONTRASEÑA --}}
-                        <div class="mt-4">
-                            <label for="password_confirmation" class="block font-medium text-sm text-gray-700">Confirmar Nueva Contraseña</label>
-                            <input id="password_confirmation" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" type="password" name="password_confirmation" />
-                        </div>
-
-                            <div class="flex items-center justify-end mt-4">
-                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-gray-400 uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
-                                    {{ __('Actualizar Usuario') }} 
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
+@section('content')
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Modificar Datos</h3>
+        </div>
+        <div class="card-body">
+            
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-            </div>
+            @endif
+
+            <form method="POST" action="{{ route('users.update', $user) }}">
+                @csrf 
+                @method('PATCH') {{-- MÉTODOS CLAVE --}}
+
+                {{-- NOMBRE (PRECargado) --}}
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
+                           value="{{ old('name', $user->name) }}" required autofocus>
+                    @error('name')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
+
+                {{-- EMAIL (PRECargado) --}}
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
+                           value="{{ old('email', $user->email) }}" required>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
+
+                {{-- NUEVA CONTRASEÑA (Opcional) --}}
+                <div class="form-group">
+                    <label for="password">Nueva Contraseña (Dejar vacío para no cambiar)</label>
+                    <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password">
+                    @error('password')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
+
+                {{-- CONFIRMAR CONTRASEÑA --}}
+                <div class="form-group">
+                    <label for="password_confirmation">Confirmar Nueva Contraseña</label>
+                    <input id="password_confirmation" type="password" name="password_confirmation" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-pen"></i> Actualizar Usuario
+                </button>
+                <a href="{{ route('users.index') }}" class="btn btn-default">Cancelar</a>
+            </form>
+
         </div>
     </div>
-</x-app-layout>
+@stop
