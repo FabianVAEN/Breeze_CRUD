@@ -336,7 +336,7 @@ return [
             'icon' => 'fas fa-fw fa-users',         // Icono de usuarios (Font Awesome)
             'submenu' => [                          // Abrir un submenú para organizar las acciones
                 [
-                    'text' => 'Lista y Búsqueda',
+                    'text' => 'Usuarios y Búsqueda',
                     'url'  => 'users',              // La URL de tu ruta users.index
                     'icon' => 'fas fa-fw fa-list',
                 ],
