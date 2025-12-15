@@ -25,3 +25,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::resource('users', UserController::class); 
 });
+
+
+// ===================================
+// RUTAS PROTEGIDAS PARA ADMINISTRADORES
+// ===================================
+Route::middleware(['auth', 'role:administrador'])->group(function () {
+    
+    // Solo si el usuario está logueado Y tiene el rol 'administrador'
+    Route::get('/admin/user', function () {
+        return view('/admin.user.index');
+    })->name('admin.user.index');
+
+
+});

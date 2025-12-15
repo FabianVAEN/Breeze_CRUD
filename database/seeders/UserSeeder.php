@@ -23,9 +23,9 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        // 2. Crear 49 Usuarios de Prueba con Factory (Total 50)        
+        // 2. Crear 9 Usuarios de Prueba con Factory (Total 10)        
         // El método factory() usa el UserFactory.php para generar datos ficticios.
-        User::factory()->count(49)->create(); 
+        User::factory()->count(9)->create(); 
         
     }
 }
