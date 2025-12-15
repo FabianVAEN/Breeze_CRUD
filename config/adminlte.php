@@ -320,13 +320,14 @@ return [
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
+        /* Pages preddefindo de la platilla AndminLTE */
+        // [
+        //     'text' => 'pages',
+        //     'url' => 'admin/pages',
+        //     'icon' => 'far fa-fw fa-file',
+        //     'label' => 4,
+        //     'label_color' => 'success',
+        // ],
         // ----------------------------------------------------------------------
         // -- 5. Bloque: GESTIÓN DE USUARIOS
         // ----------------------------------------------------------------------

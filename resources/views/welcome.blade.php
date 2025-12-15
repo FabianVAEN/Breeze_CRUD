@@ -15,7 +15,6 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            /* Fondo: Un degradado oscuro (similar al diseño que me mostraste) */
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             color: white; /* Texto blanco para el fondo oscuro */
         }
