@@ -328,24 +328,34 @@ return [
         //     'label' => 4,
         //     'label_color' => 'success',
         // ],
-        // ----------------------------------------------------------------------
-        // -- 5. Bloque: GESTIÓN DE USUARIOS
-        // ----------------------------------------------------------------------
+        
+        // -- Bloque: GESTIÓN DE USUARIOS
+
         [
-            'text' => 'Gestión de Usuarios',       // Título principal que aparecerá en el Sidebar
-            'icon' => 'fas fa-fw fa-users',         // Icono de usuarios (Font Awesome)
-            'submenu' => [                          // Abrir un submenú para organizar las acciones
+        'text'    => 'Panel de administración',
+        'icon'    => 'fas fa-fw fa-lock',
+        // La protección del menú principal
+        'can'     => 'ver_dashboard_admin', 
+    
+            'submenu' => [ 
                 [
-                    'text' => 'Usuarios y Búsqueda',
-                    'url'  => 'users',              // La URL de tu ruta users.index
-                    'icon' => 'fas fa-fw fa-list',
-                ],
-                [
-                    'text' => 'Crear Nuevo Usuario',
-                    'url'  => 'users/create',       // La URL de tu ruta users.create
-                    'icon' => 'fas fa-fw fa-plus',
-                ],
-            ],
+                    'text' => 'Gestión de Usuarios',
+                    'icon' => 'fas fa-fw fa-users',
+
+                    'submenu' => [ 
+                        [
+                            'text' => 'Lista y Búsqueda',
+                            'url'  => 'users',
+                            'icon' => 'fas fa-fw fa-list',
+                        ],
+                        [
+                            'text' => 'Crear Nuevo Usuario',
+                            'url'  => 'users/create',
+                            'icon' => 'fas fa-fw fa-plus',
+                        ],
+                     ],
+                 ],
+             ],
         ],
         // Opciones de la cuenta y configuración
         ['header' => 'Opciones de la cuenta'],
