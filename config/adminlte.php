@@ -361,7 +361,7 @@ return [
         ['header' => 'Opciones de la cuenta'],
         [
             'text' => 'Perfil',
-            'url' => 'admin/settings',
+            'url' => 'profile',
             'icon' => 'fas fa-fw fa-user',
         ],
         [

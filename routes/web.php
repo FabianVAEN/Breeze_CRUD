@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -26,12 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class); 
 });
 
-
-// ===================================
 // RUTAS PROTEGIDAS PARA ADMINISTRADORES
-// ===================================
 Route::middleware(['auth', 'role:administrador'])->group(function () {
-    
     // Solo si el usuario está logueado Y tiene el rol 'administrador'
     Route::get('/admin/user', function () {
         return view('/admin.user.index');
